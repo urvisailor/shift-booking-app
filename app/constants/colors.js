@@ -1,0 +1,14 @@
+export const COLORS = {
+    LIGHT_GREY: '#F7F8FB',
+    GREY: '#F1F4F8',
+    LINK_WATER: "#CBD2E1",
+    PRIMARY: '#4F6C92',
+    SECONDARY: '#A4B8D3',
+    BLUE: '#004FB4',
+    BABY_PINK: "#EED2DF",
+    LIGHT_PINK: '#FE93B3',
+    DARK_PINK: '#E2006A',
+    HUMMIN_BIRD: '#CAEFD8',
+    LIGHT_GREEN: '#55CB82',
+    DARK_GREEN: '#16A64D'
+}

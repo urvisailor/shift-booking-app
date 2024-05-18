@@ -7,3 +7,21 @@ export const getShifts = async () => {
         throw error;
     }
 };
+
+export const bookShift = async (id) => {
+    try {
+        const response = await axios.post(`shifts/${id}/book`)
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const cancel = async (id) => {
+    try {
+        const response = await axios.post(`shifts/${id}/cancel`)
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

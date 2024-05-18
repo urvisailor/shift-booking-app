@@ -1,4 +1,6 @@
 export const COLORS = {
+    WHITE: '#fff',
+    BLACK: '#000',
     LIGHT_GREY: '#F7F8FB',
     GREY: '#F1F4F8',
     LINK_WATER: "#CBD2E1",

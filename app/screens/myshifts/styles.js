@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     safeArea: {
         backgroundColor: COLORS.WHITE,
         flex: 0.0001,
-        paddingTop: isAndroid ? StatusBar.currentHeight : 0
     },
     container: {
         backgroundColor: COLORS.WHITE,

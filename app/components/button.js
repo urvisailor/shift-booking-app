@@ -2,11 +2,13 @@ import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'rea
 import React from 'react'
 import { COLORS } from '../constants/colors'
 import { getFontSize } from '../constants/utils'
+import { WithLocalSvg } from 'react-native-svg/css'
+import { greenLoader, redLoader } from '../constants/svgs'
 
 const Button = ({ disable, onClick, title, isCancelable, isloading }) => {
     return (
         <TouchableOpacity onPress={onClick} style={[disable ? styles.disableButton : isCancelable ? styles.cancelButton : styles.bookButton, styles.button]}>
-            {isloading ? <ActivityIndicator size={'small'} color={isCancelable ? COLORS.DARK_PINK : COLORS.DARK_GREEN} /> : <Text style={[disable ? styles.disableTxt : isCancelable ? styles.cancelTxt : styles.bookTxt, styles.btnTxt]}>{title}</Text>}
+            {isloading ? <WithLocalSvg asset={isCancelable ? redLoader : greenLoader} width={10} height={10} /> : <Text style={[disable ? styles.disableTxt : isCancelable ? styles.cancelTxt : styles.bookTxt, styles.btnTxt]}>{title}</Text>}
         </TouchableOpacity>
     )
 }

@@ -6,6 +6,7 @@ import { TEXTS } from '../../../constants/texts'
 import styles from '../styles'
 import Button from '../../../components/button'
 import { useSelector } from 'react-redux'
+import { calculateTotalHrs } from '../../../constants/dataresolver'
 
 const ShiftLists = ({ shifts, onShiftClick }) => {
     const [shiftData, setshiftData] = useState([])
@@ -18,9 +19,14 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
             const stringToDate = DateTime.fromFormat(key, "dd MMM yyyy")
             const today = isToday(stringToDate)
             const tomorrow = isTomorrow(stringToDate)
+            const numberOfShifts = value.length
+            const totalHrs = calculateTotalHrs(value)
             let titleTxt = today ? TEXTS.constants.TODAY : tomorrow ? TEXTS.constants.TOMORROW : key
             mutatedData.push({
-                title: titleTxt,
+                title: {
+                    date: titleTxt,
+                    shiftduration: ` ${numberOfShifts} ${numberOfShifts == 1 ? TEXTS.constants.SHIFT : TEXTS.constants.SHIFTS}, ${totalHrs} h`
+                },
                 data: value
             })
         }
@@ -29,27 +35,8 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
 
     const onPress = (selectedItem) => {
         setshowloading(selectedItem)
-        // onShiftClick(selectedItem)
-        //Changed booking status in state
-        const mutatedData = shiftData.map((section) => {
-            const data = section.data.map((item) => {
-                if (item.id === selectedItem.id) {
-                    return {
-                        ...item,
-                        booked: selectedItem.booked ? false : true
-                    }
-                } else {
-                    return item
-                }
-            })
-            return {
-                ...section,
-                data
-            }
-        })
-        setshiftData(mutatedData)
+        onShiftClick(selectedItem)
     }
-    // console.log("shiftData===>", JSON.stringify(shiftData))
 
     return (
         <View>
@@ -72,7 +59,8 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
                 }}
                 renderSectionHeader={({ section: { title } }) => (
                     <View style={styles.titleView}>
-                        <Text style={styles.title}>{title}</Text>
+                        <Text style={styles.title}>{title?.date}</Text>
+                        <Text style={styles.duration}>{"  " + title?.shiftduration}</Text>
                     </View>
                 )}
             />

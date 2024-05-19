@@ -6,6 +6,7 @@ import styles from './styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS } from '../../constants/colors'
 import ShiftLists from './components/shiftlist'
+import { cancelShifts } from '../../redux/slice'
 
 const MyShifts = () => {
   const dispatch = useDispatch()
@@ -17,8 +18,8 @@ const MyShifts = () => {
     setshifts(formattedData)
   }, [allShift])
 
-  const shiftClick = () => {
-
+  const shiftClick = (item) => {
+    dispatch(cancelShifts(item?.id))
   }
 
   return (

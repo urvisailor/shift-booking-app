@@ -10,7 +10,9 @@ export const TEXTS = {
         TOMORROW: 'Tomorrow',
         BOOKED: 'Booked',
         OVERLAP: 'Overlapping',
-        BOOK:'Book',
-        CANCEL:'Cancel'
+        BOOK: 'Book',
+        CANCEL: 'Cancel',
+        SHIFT: 'Shift',
+        SHIFTS: 'Shifts'
     }
 }

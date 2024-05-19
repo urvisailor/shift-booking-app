@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
     titleView: {
         backgroundColor: COLORS.LIGHT_GREY,
         padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomWidth: 0.2,
         borderBottomColor: COLORS.LINK_WATER,
     },
@@ -47,8 +49,13 @@ const styles = StyleSheet.create({
     areaTxt: {
         fontSize: getFontSize(14),
         color: COLORS.LINK_WATER,
-        fontWeight:'500',
-        marginTop:3
+        fontWeight: '500',
+        marginTop: 3
+    },
+    duration: {
+        fontWeight: '500',
+        color: COLORS.LINK_WATER,
+        fontSize: getFontSize(14)
     }
 })
 

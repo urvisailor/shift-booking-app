@@ -34,7 +34,6 @@ export const availableShiftData = (shifts) => {
             totalShifts: groupByArea.length
         }
     })
-    console.log("data grp by====>", JSON.stringify(data))
     return data
 }
 
@@ -60,7 +59,6 @@ export const myShifts = (shifts) => {
         grpByDate[formattedStartDate].push(shift)
         return grpByDate
     }, {})
-    console.log("groupByDate===>", groupByDate)
     return groupByDate
 }
 
@@ -75,4 +73,14 @@ export const isDisabled = (item, originalData) => {
 export const hasOverLapped = (currentItem, originalData) => {
     const isOverLapping = !!originalData.filter(s => s.booked).find(s => s.startTime < currentItem.endTime && s.endTime > currentItem.startTime)
     return isOverLapping
+}
+
+export const calculateTotalHrs = (data) => {
+    let totalHrs = 0
+    //calculate total hours
+    for (const shift of data) {
+        const duration = (shift.endTime - shift.startTime)/(1000 * 60 * 60);
+        totalHrs += duration;
+    }
+    return totalHrs
 }

@@ -38,26 +38,33 @@ export const availableShiftData = (shifts) => {
     return data
 }
 
-export const isDisabled = (startTime, endTime, status, shifts) => {
+export const isDisabled = (item, shifts) => {
     const now = DateTime.now();
-    const isPassed = endTime <= now
-    const [_, isOverLapping] = isOverLapped(startTime, endTime, shifts)
-    console.log("isPassed ? isPassed : isOverLapping", isPassed ? isPassed : isOverLapping)
-    return isPassed
+    //Check if time is passed or not
+    const isPassed = item.endTime <= now
+    //Get Overlapping flag
+    const isOverLapping = hasOverLapped(item, shifts)
+    return isPassed ? isPassed : !item.booked ? isOverLapping : false
 }
 
-const isOverLapped = (startTime, endTime, shifts) => {
-    const overLappedData = shifts.map((item) => {
-        const date = DateTime.fromMillis(startTime)
-        const itemDate = DateTime.fromMillis(item.startTime)
-        console.log("date === itemDate==>", date.equals(itemDate))
-        const isOverLapping = date.equals(itemDate) ? (startTime < item.endTime) && (endTime > item.startTime) : false;
-        return {
-            ...item,
-            isOverLapping: isOverLapping
+export const hasOverLapped = (currentItem, shifts) => {
+    for (const shift of shifts?.data) {
+        // Check if booked is true (only consider booked shifts)
+        if (shift.booked) {
+            const existingStartTime = shift.startTime;
+            const existingEndTime = shift.endTime;
+            // Check for overlap scenarios
+            if (
+                // New start time is within existing shift
+                (currentItem.startTime >= existingStartTime && currentItem.startTime < existingEndTime) ||
+                // New end time is within existing shift
+                (currentItem.endTime > existingStartTime && currentItem.endTime <= existingEndTime) ||
+                // Existing shift entirely within new time slot
+                (existingStartTime >= currentItem.startTime && existingEndTime <= currentItem.endTime)
+            ) {
+                return true;
+            }
         }
-    })
-    const hadAnyOfDataOverLapped = overLappedData.filter((item) => item.isOverLapping).length > 0 ? true : false
-    console.log("overlapped==>", overLappedData)
-    return [overLappedData, hadAnyOfDataOverLapped]
+    }
+    return false;
 }

@@ -6,7 +6,7 @@ import { TEXTS } from '../../../constants/texts'
 import styles from '../styles'
 import Button from './button'
 import { useSelector } from 'react-redux'
-import { isDisabled } from '../../../constants/dataresolver'
+import { hasOverLapped, isDisabled } from '../../../constants/dataresolver'
 
 const ShiftLists = ({ shifts, onShiftClick }) => {
     const [shiftData, setshiftData] = useState([])
@@ -52,6 +52,7 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
         })
         setshiftData(mutatedData)
     }
+    // console.log("shiftData===>", JSON.stringify(shiftData))
 
     return (
         <View>
@@ -59,8 +60,9 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
                 sections={shiftData || []}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, section }) => {
-                    const isDisable = isDisabled(item.startTime, item.endTime, item?.booked, section?.data)
-                    const isBooked = item.booked ? TEXTS.constants.BOOKED : ''
+                    const isOverLapping = hasOverLapped(item, section)
+                    const isDisable = isDisabled(item, section)
+                    const isBooked = item.booked ? TEXTS.constants.BOOKED : isOverLapping ? TEXTS.constants.OVERLAP : ''
                     const btnTxt = item.booked ? TEXTS.constants.CANCEL : TEXTS.constants.BOOK
                     return (
                         <View style={[styles.row, styles.shiftZoneView]}>

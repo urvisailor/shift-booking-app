@@ -12,13 +12,14 @@ import ShiftLists from './components/shiftlist'
 const AvailableShifts = () => {
     const dispatch = useDispatch()
     const allShift = useSelector(state => state.shift.shiftsData)
+    const [currentIndex, setcurrentIndex] = useState(0)
     const [shifts, setshifts] = useState([])
     const [cityWiseShift, setcityWiseShift] = useState([])
 
     useEffect(() => {
         const formattedData = availableShiftData(allShift)
         setshifts(formattedData)
-        setcityWiseShift(formattedData[0])
+        setcityWiseShift(formattedData[currentIndex])
     }, [allShift])
 
 
@@ -42,7 +43,7 @@ const AvailableShifts = () => {
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.safeArea} />
-            <Header shifts={shifts} onTap={onTap} />
+            <Header shifts={shifts} onTap={onTap} currentIndex={currentIndex} setcurrentIndex={setcurrentIndex} />
             <View style={{ backgroundColor: COLORS.WHITE, flex: 1 }}>
                 <ShiftLists shifts={cityWiseShift} onShiftClick={shiftClick} />
             </View>

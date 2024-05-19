@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from '../styles'
 import { COLORS } from '../../../constants/colors'
 
-const Header = ({ shifts, onTap }) => {
-    const [currentIndex, setcurrentIndex] = useState(0)
+const Header = ({ shifts, onTap, currentIndex, setcurrentIndex }) => {
 
     useEffect(() => {
         onTap(shifts[0])

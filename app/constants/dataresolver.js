@@ -38,33 +38,41 @@ export const availableShiftData = (shifts) => {
     return data
 }
 
-export const isDisabled = (item, shifts) => {
-    const now = DateTime.now();
+export const myShifts = (shifts) => {
+    const bookedShifts = shifts.filter((shift) => shift.booked).map((s) => {
+        const formattedStartDate = DateTime.fromMillis(s.startTime).toLocaleString(DateTime.DATE_MED);
+        const formattedStartTime = DateTime.fromMillis(s.startTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+        const formattedEndDate = DateTime.fromMillis(s.startTime).toLocaleString(DateTime.DATE_MED);
+        const formattedEndTime = DateTime.fromMillis(s.endTime).toLocaleString(DateTime.TIME_24_SIMPLE);
+        return {
+            ...s,
+            formattedStartDate,
+            formattedStartTime,
+            formattedEndDate,
+            formattedEndTime
+        }
+    })
+    const groupByDate = bookedShifts.reduce((grpByDate, shift) => {
+        const { formattedStartDate } = shift
+        if (!grpByDate[formattedStartDate]) {
+            grpByDate[formattedStartDate] = []
+        }
+        grpByDate[formattedStartDate].push(shift)
+        return grpByDate
+    }, {})
+    console.log("groupByDate===>", groupByDate)
+    return groupByDate
+}
+
+export const isDisabled = (item, originalData) => {
     //Check if time is passed or not
-    const isPassed = item.endTime <= now
+    const isPassed = Date.now() >= item.endTime || Date.now() > item.startTime
     //Get Overlapping flag
-    const isOverLapping = hasOverLapped(item, shifts)
+    const isOverLapping = hasOverLapped(item, originalData)
     return isPassed ? isPassed : !item.booked ? isOverLapping : false
 }
 
-export const hasOverLapped = (currentItem, shifts) => {
-    for (const shift of shifts?.data) {
-        // Check if booked is true (only consider booked shifts)
-        if (shift.booked) {
-            const existingStartTime = shift.startTime;
-            const existingEndTime = shift.endTime;
-            // Check for overlap scenarios
-            if (
-                // New start time is within existing shift
-                (currentItem.startTime >= existingStartTime && currentItem.startTime < existingEndTime) ||
-                // New end time is within existing shift
-                (currentItem.endTime > existingStartTime && currentItem.endTime <= existingEndTime) ||
-                // Existing shift entirely within new time slot
-                (existingStartTime >= currentItem.startTime && existingEndTime <= currentItem.endTime)
-            ) {
-                return true;
-            }
-        }
-    }
-    return false;
+export const hasOverLapped = (currentItem, originalData) => {
+    const isOverLapping = !!originalData.filter(s => s.booked).find(s => s.startTime < currentItem.endTime && s.endTime > currentItem.startTime)
+    return isOverLapping
 }

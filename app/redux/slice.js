@@ -17,7 +17,8 @@ export const fetchShifts = createAsyncThunk(
 
 export const updateShifts = createAsyncThunk(
     'shifts/updateShifts',
-    async (id) => {
+    async (id, thunkAPI) => {
+        const { getState } = thunkAPI
         const response = await bookShift(id)
         return response
     },
@@ -52,6 +53,11 @@ export const shiftsSlice = createSlice({
             state.isupdating = true
         })
         builder.addCase(updateShifts.fulfilled, (state, action) => {
+            const { id, booked } = action.payload;
+            const shiftIndex = state.shiftsData.findIndex((shift) => shift.id === id);
+            if (shiftIndex !== -1) {
+              state.shiftsData[shiftIndex].booked = booked;
+            }
             state.isupdating = false
         })
         builder.addCase(updateShifts.rejected, (state, action) => {
@@ -61,6 +67,11 @@ export const shiftsSlice = createSlice({
             state.isupdating = true
         })
         builder.addCase(cancelShifts.fulfilled, (state, action) => {
+            const { id, booked } = action.payload;
+            const shiftIndex = state.shiftsData.findIndex((shift) => shift.id === id);
+            if (shiftIndex !== -1) {
+              state.shiftsData[shiftIndex].booked = booked;
+            }
             state.isupdating = false
         })
         builder.addCase(cancelShifts.rejected, (state, action) => {

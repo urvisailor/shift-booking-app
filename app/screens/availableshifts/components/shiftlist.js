@@ -4,13 +4,14 @@ import { DateTime } from 'luxon'
 import { isToday, isTomorrow } from '../../../constants/utils'
 import { TEXTS } from '../../../constants/texts'
 import styles from '../styles'
-import Button from './button'
+import Button from '../../../components/button'
 import { useSelector } from 'react-redux'
 import { hasOverLapped, isDisabled } from '../../../constants/dataresolver'
 
 const ShiftLists = ({ shifts, onShiftClick }) => {
     const [shiftData, setshiftData] = useState([])
     const isloading = useSelector(state => state.shift.isupdating)
+    const originalShiftData = useSelector(state => state.shift.shiftsData)
     const [showloading, setshowloading] = useState(false)
 
     useEffect(() => {
@@ -33,26 +34,7 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
     const onPress = (selectedItem) => {
         setshowloading(selectedItem)
         onShiftClick(selectedItem)
-        //Changed booking status in state
-        const mutatedData = shiftData.map((section) => {
-            const data = section.data.map((item) => {
-                if (item.id === selectedItem.id) {
-                    return {
-                        ...item,
-                        booked: selectedItem.booked ? false : true
-                    }
-                } else {
-                    return item
-                }
-            })
-            return {
-                ...section,
-                data
-            }
-        })
-        setshiftData(mutatedData)
     }
-    // console.log("shiftData===>", JSON.stringify(shiftData))
 
     return (
         <View>
@@ -60,8 +42,8 @@ const ShiftLists = ({ shifts, onShiftClick }) => {
                 sections={shiftData || []}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, section }) => {
-                    const isOverLapping = hasOverLapped(item, section)
-                    const isDisable = isDisabled(item, section)
+                    const isOverLapping = hasOverLapped(item, originalShiftData)
+                    const isDisable = isDisabled(item, originalShiftData)
                     const isBooked = item.booked ? TEXTS.constants.BOOKED : isOverLapping ? TEXTS.constants.OVERLAP : ''
                     const btnTxt = item.booked ? TEXTS.constants.CANCEL : TEXTS.constants.BOOK
                     return (

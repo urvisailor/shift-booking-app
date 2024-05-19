@@ -9,9 +9,17 @@ instance.interceptors.response.use(response => {
 }, async (error) => {
     const request = error.config;
     if (!request._retry) {
-        originalRequest._retry = true;
+        request._retry = true;
         return instance(request);
     }
+    if (error.response && error.response.status === 400) {
+        // Show alert for 400 (Bad Request) errors
+        alert(error.response.data.message);
+    } else {
+        // Handle other errors (optional)
+        alert('API request failed! An unexpected error occurred.');
+    }
+
     return Promise.reject(error)
 })
 

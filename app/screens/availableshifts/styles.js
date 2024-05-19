@@ -54,34 +54,6 @@ const styles = StyleSheet.create({
         fontSize: getFontSize(14),
         fontWeight: '500'
     },
-    button: {
-        padding: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        borderWidth: 1,
-    },
-    disableButton: {
-        borderColor: COLORS.LINK_WATER
-    },
-    cancelButton: {
-        borderColor: COLORS.DARK_PINK
-    },
-    bookButton: {
-        borderColor: COLORS.DARK_GREEN
-    },
-    btnTxt: {
-        fontSize: getFontSize(12),
-        fontWeight: '500'
-    },
-    disableTxt: {
-        color: COLORS.LINK_WATER
-    },
-    cancelTxt: {
-        color: COLORS.DARK_PINK
-    },
-    bookTxt: {
-        color: COLORS.DARK_GREEN
-    },
     statusLabel: {
         fontWeight: '700'
     }
